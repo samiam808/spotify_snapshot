@@ -3,6 +3,12 @@ import re
 from collections import Counter
 
 
+class Header:
+   BOLD = '\033[1m'
+   UNDERLINE = '\033[4m'
+   END = '\033[0m'
+
+
 def convert_google_link(link: str) -> str:
     """
     Converts a Google Sheet URL to a CSV export link.
@@ -44,7 +50,7 @@ def analyze_data(
         specific_artist (str): Specific artist to count plays for.
 
     Returns:
-        str: A detailed analysis report.
+        str: All the requested information.
     """
     try:
         # Convert Google Sheet URL and load data into a DataFrame
@@ -64,39 +70,39 @@ def analyze_data(
         all_artist_counts = Counter(spotify_data['artist'])
 
         # Construct the analysis result
-        report = f"SELECTED TIMEFRAME: {start_date} TO {end_date}\n"
-        report += f"TOTAL PLAYS IN SELECTED TIMEFRAME: {len(filtered_data)} SONGS\n\n"
+        report = f'SELECTED TIMEFRAME: {start_date} TO {end_date}\n'
+        report += f'TOTAL PLAYS IN SELECTED TIMEFRAME: {len(filtered_data)} SONGS\n\n'
 
         # Add top songs and artists in the selected timeframe
-        report += f"TOP {top_songs_limit} SONGS IN SELECTED TIMEFRAME:\n"
+        report += f'TOP {top_songs_limit} SONGS IN SELECTED TIMEFRAME:\n'
         for idx, (song, count) in enumerate(filtered_song_counts.most_common(top_songs_limit), start=1):
-            report += f"{idx}. {song}: {count} plays\n"
+            report += f'{idx}. {song}: {count} plays\n'
 
-        report += f"TOP {top_artists_limit} ARTISTS IN SELECTED TIMEFRAME:\n"
+        report += f'\nTOP {top_artists_limit} ARTISTS IN SELECTED TIMEFRAME:\n'
         for idx, (artist, count) in enumerate(filtered_artist_counts.most_common(top_artists_limit), start=1):
-            report += f"{idx}. {artist}: {count} plays\n"
+            report += f'{idx}. {artist}: {count} plays\n'
 
         # Add all-time top songs and artists
-        report += f"\n--- ALL-TIME TOP {top_songs_limit} SONGS ---\n"
+        report += f'\n--- ALL-TIME TOP {top_songs_limit} SONGS ---\n'
         for idx, (song, count) in enumerate(all_song_counts.most_common(top_songs_limit), start=1):
-            report += f"{idx}. {song}: {count} plays\n"
+            report += f'{idx}. {song}: {count} plays\n'
 
-        report += f"\n--- ALL-TIME TOP {top_artists_limit} ARTISTS ---\n"
+        report += f'\n--- ALL-TIME TOP {top_artists_limit} ARTISTS ---\n'
         for idx, (artist, count) in enumerate(all_artist_counts.most_common(top_artists_limit), start=1):
-            report += f"{idx}. {artist}: {count} plays\n"
+            report += f'{idx}. {artist}: {count} plays\n'
 
         # Include counts for specific song and artist, if provided
         if specific_song:
-            report += f"\nSPECIFIC SONG: {specific_song}\n"
-            report += f"Plays in Selected Timeframe: {filtered_song_counts.get(specific_song, 0)}\n"
-            report += f"All-Time Plays: {all_song_counts.get(specific_song, 0)}\n"
+            report += f'\nSPECIFIC SONG: {specific_song}\n'
+            report += f'Plays in Selected Timeframe: {filtered_song_counts.get(specific_song, 0)}\n'
+            report += f'All-Time Plays: {all_song_counts.get(specific_song, 0)}\n'
 
         if specific_artist:
-            report += f"\nSPECIFIC ARTIST: {specific_artist}\n"
-            report += f"Plays in Selected Timeframe: {filtered_artist_counts.get(specific_artist, 0)}\n"
-            report += f"All-Time Plays: {all_artist_counts.get(specific_artist, 0)}\n"
+            report += f'\nSPECIFIC ARTIST: {specific_artist}\n'
+            report += f'Plays in Selected Timeframe: {filtered_artist_counts.get(specific_artist, 0)}\n'
+            report += f'All-Time Plays: {all_artist_counts.get(specific_artist, 0)}\n'
 
         return report
 
     except Exception as error:
-        return f"Error: {str(error)}"
+        return f'Error: {str(error)}'

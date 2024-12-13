@@ -4,7 +4,6 @@ from PyQt6 import QtWidgets
 from gui import Ui_spotify_snapshot_window  # GUI class
 from logic import analyze_data
 
-
 class SpotifySnapshotApplication(QtWidgets.QMainWindow):
     """
     Main application class for managing the Spotify Snapshot GUI and interactions.
