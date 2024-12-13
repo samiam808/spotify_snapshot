@@ -69,7 +69,7 @@ def analyze_data(
         all_song_counts = Counter(spotify_data['song'])
         all_artist_counts = Counter(spotify_data['artist'])
 
-        # Construct the analysis result
+        # Construct the analysis report
         report = f'SELECTED TIMEFRAME: {start_date} TO {end_date}\n'
         report += f'TOTAL PLAYS IN SELECTED TIMEFRAME: {len(filtered_data)} SONGS\n\n'
 
